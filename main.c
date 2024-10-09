@@ -1,6 +1,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <math.h>
 
 // Takes a UTF-8 encoded string and returns if it is valid ASCII (e.g. all bytes are 127 or less).
 int32_t is_ascii(char str[]){
@@ -146,11 +147,48 @@ void utf8_substring(char str[], int32_t cpi_start, int32_t cpi_end, char result[
 
 int32_t codepoint_at(char str[], int32_t cpi){
 
-    
     int byte_index = codepoint_index_to_byte_index(str, cpi);
-    return (int)str[byte_index];
+    if(byte_index == -1) return -1;
+    int width = width_from_start_byte(str[byte_index]);
+    if(width == -1) return -1;
 
+    int code_point =0;
 
+    if(width == 1){
+        code_point = str[byte_index];
+    }
+    else if(width == 2){
+        // 2byte sequence : (110xxxxx 10xxxxxx)
+        code_point = (((str[byte_index] & 0b00011111) * (int)pow(2,6)) | (str[byte_index + 1] & 0b00111111));
+    }
+    else if (width == 3) {
+        // 3-byte : (1110xxxx 10xxxxxx 10xxxxxx)
+        code_point = ((str[byte_index] & 0b00001111) * (int)pow(2, 12)) | 
+                    ((str[byte_index + 1] & 0b00111111) * (int)pow(2, 6)) |
+                    (str[byte_index + 2] & 0b00111111);
+    } else if (width == 4) {
+        // 4-byte : (11110xxx 10xxxxxx 10xxxxxx 10xxxxxx)
+        code_point = ((str[byte_index] & 0b00000111) * (int)pow(2, 18)) | 
+                    ((str[byte_index + 1] & 0b00111111) * (int)pow(2, 12)) |
+                    ((str[byte_index + 2] & 0b00111111) * (int)pow(2, 6)) |
+                    (str[byte_index + 3] & 0b00111111);
+    }
+    return code_point;
+
+}
+
+// Takes a UTF-8 encoded string and an codepoint index, and returns if the code point at that index is an animal emoji.
+char is_animal_emoji_at(char str[], int32_t cpi){
+
+    int codepoint = codepoint_at(str, cpi);
+
+    // Check if the codepoint falls within the two specified ranges for animal emojis
+    if ((codepoint >= 0x1F400 && codepoint <= 0x1F43F) ||  // 🐀 to 🐿️
+        (codepoint >= 0x1F980 && codepoint <= 0x1F9AE)) {  // 🦀 to 🦮
+        return 1;  // True: it is an animal emoji
+    }
+    
+    return 0;
 }
 
 
@@ -184,9 +222,9 @@ int main(){
     // 0,1,2,3  4,5,6,7  8,9,10,11  12,13,14,15   16,17,18,19   20,21,22,23  24,25,26,27
 
     // MileStone3
-    char str[] = "Joséph";
-    int32_t idx = 4;
-    printf("Codepoint at %d in %s is %d\n", idx, str, codepoint_at(str, idx)); // 'p' is the 4th codepoint
+    //char str[] = "Jos🦀ph";
+    //int32_t idx = 3;
+    //printf("Codepoint at %d in %s is %d\n", idx, str, codepoint_at(str, idx)); // 'p' is the 4th codepoint
 
     //=== Output ===
     //Codepoint at 4 in Joséph is 112
