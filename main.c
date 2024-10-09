@@ -88,7 +88,10 @@ int32_t codepoint_index_to_byte_index(char str[], int32_t cpi){
 
     int byte_index = 0;
     int codepoint_count = 0;
+
+    // Keep looping while str's byte index reaches to null-terminator
     while(str[byte_index] != '\0'){
+        // Getting how many bytes they have for a codepoint.
         int width = width_from_start_byte(str[byte_index]);
 
         if(width == -1) return -1;
@@ -110,20 +113,21 @@ int32_t codepoint_index_to_byte_index(char str[], int32_t cpi){
 // the function should have no effect.
 void utf8_substring(char str[], int32_t cpi_start, int32_t cpi_end, char result[]){
     
-
+    // if starting and ending codepoints are less than 0 or starting codepoint is larger than ending codepoint then return with no changes.
     if(cpi_start < 0 || cpi_end < 0 || cpi_start >= cpi_end) {
-        // No effect, leave result unchanged
         return;
     }
 
+    // Changing the codepoint index to byte index to get all the bytes for 4 bytes long emoji
     int byte_start = codepoint_index_to_byte_index(str, cpi_start);
     int byte_end = codepoint_index_to_byte_index(str, cpi_end);
-    printf("\n\n\n%d\n\n\n", byte_end);
 
+    // if codepoint_index_to_byte_index return -1 then return with no changes.
     if(byte_start == -1 || byte_end == -1) {
         return;
     }
     
+    // New index for putting the bytes in to new str[]
     int index_result =0;
 
     for(int i = byte_start; i < byte_end; i++){
@@ -131,8 +135,25 @@ void utf8_substring(char str[], int32_t cpi_start, int32_t cpi_end, char result[
         index_result += 1;
     }
 
+    // ending with null-terminator at the last byte index.
+    result[index_result] = '\0';
 
 }
+
+// Milestone3
+
+// Takes a UTF-8 encoded string and a codepoint index, and returns a decimal representing the codepoint at that index.
+
+int32_t codepoint_at(char str[], int32_t cpi){
+
+    
+    int byte_index = codepoint_index_to_byte_index(str, cpi);
+    return (int)str[byte_index];
+
+
+}
+
+
 int main(){
     /* MILESTONE1
     printf("Is 🔥 ASCII? %d\n", is_ascii("🔥"));
@@ -156,12 +177,17 @@ int main(){
     //char str[] = "🦀🦮🦮";
     //int32_t idx = 2;
     //printf("Codepoint index %d is byte index %d\n", idx, codepoint_index_to_byte_index(str, idx));
-    char result[17];
-    utf8_substring("🦀🦮🦮🦀🦀🦮🦮", 3, 5, result);
-    printf("String: \nSubstring: %s\n", result); // these emoji are 4 bytes long
+    //char result[17];
+    //utf8_substring("🦀🦮🦮🦀🦀🦮🦮", 3, 5, result);
+    //printf("String: \nSubstring: %s\n", result); // these emoji are 4 bytes long
+
+    // 0,1,2,3  4,5,6,7  8,9,10,11  12,13,14,15   16,17,18,19   20,21,22,23  24,25,26,27
+
+    // MileStone3
+    char str[] = "Joséph";
+    int32_t idx = 4;
+    printf("Codepoint at %d in %s is %d\n", idx, str, codepoint_at(str, idx)); // 'p' is the 4th codepoint
 
     //=== Output ===
-    //String: 🦀🦮🦮🦀🦀🦮🦮
-    //Substring: 🦀🦀🦮🦮
-    //return 0;
+    //Codepoint at 4 in Joséph is 112
 }
