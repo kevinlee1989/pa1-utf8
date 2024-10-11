@@ -226,25 +226,27 @@ int main(){
  
     //UFTanalyzer
     //"My 🐩’s name is Erdős."
+
+
+    
+
     char input[100];
     printf("Enter a UFT-8 encoded string: ");
     fgets(input, 100, stdin);
 
+ 
+    
 
     //Is the string valid ASCII
     printf("Valid ASCII: %s\n", is_ascii(input) ? "true" : "false");
 
-    // Getting rid of new line character, and if it is then replace to null character.
-    int len = strlen(input);
-    if (len > 0 && input[len - 1] == '\n') {
-        input[len - 1] = '\0';
-    }
+    
    
     // Uppercase the ASCII characters
     char uppercased[100];
     strcpy(uppercased, input);
     capitalize_ascii(uppercased);
-    printf("Uppercased ASCII: %s\n", uppercased);
+    printf("Uppercased ASCII: %s", uppercased);
 
 
     // Length in bytes 
