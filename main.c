@@ -230,20 +230,22 @@ int main(){
     printf("Enter a UFT-8 encoded string: ");
     fgets(input, 100, stdin);
 
+
+    //Is the string valid ASCII
+    printf("Valid ASCII: %s\n", is_ascii(input) ? "true" : "false");
+
     // Getting rid of new line character, and if it is then replace to null character.
     int len = strlen(input);
     if (len > 0 && input[len - 1] == '\n') {
         input[len - 1] = '\0';
     }
-
-    //Is the string valid ASCII
-    printf("Valid ASCII: %s\n", is_ascii(input) ? "true" : "false");
    
     // Uppercase the ASCII characters
     char uppercased[100];
     strcpy(uppercased, input);
     capitalize_ascii(uppercased);
     printf("Uppercased ASCII: %s\n", uppercased);
+
 
     // Length in bytes 
     int byte_length = strlen(input);
@@ -254,7 +256,7 @@ int main(){
     printf("Number of code points: %d\n", codepoints);
 
     // Bytes per codepoint
-    printf("bytes per code point: ");
+    printf("Bytes per code point: ");
     for(int i =0; i< byte_length;){
         int width = width_from_start_byte(input[i]);
         printf("%d ", width);
