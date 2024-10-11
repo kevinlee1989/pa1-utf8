@@ -231,10 +231,11 @@ int main(){
     
 
     char input[100];
+    
+    printf("Enter a UFT-8 encoded string: ");
     fgets(input, 100, stdin);
-    printf("Enter a UFT-8 encoded string: %s\n", input);
-   
 
+    printf("\n");
     // Getting rid of new line character, and if it is then replace to null character.
     int len = strlen(input);
     if (len > 0 && input[len - 1] == '\n') {
