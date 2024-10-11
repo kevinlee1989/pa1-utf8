@@ -206,8 +206,8 @@ int main(){
 
      //MILESTONE2
     
-    //char s[] = "🐀🐿🦀🦮"; // same as { 'H', 0xC3, 0xA9, 'y', 0 },   é is start byte + 1 cont. byte
-    //printf("Width: %d bytes\n", width_from_start_byte(s[8])); // start byte 0xC3 indicates 2-byte sequence
+    //char s[] = "Ω"; // same as { 'H', 0xC3, 0xA9, 'y', 0 },   é is start byte + 1 cont. byte
+    //printf("Width: %d bytes\n", width_from_start_byte(s[0])); // start byte 0xC3 indicates 2-byte sequence
     
     //char str[] = "Joséph.";
     //printf("Length of string %s is %d\n", str, utf8_strlen(str));  // 6 codepoints, (even though 7 bytes)
@@ -226,18 +226,24 @@ int main(){
  
     //UFTanalyzer
     //"My 🐩’s name is Erdős."
-    char input[100] = "My 🐩’s name is Erdős.";
-    printf("Enter a UFT-8 encoded string: %s", input);
-    //fgets(input, 100, stdin);
+    char input[100];
+    printf("Enter a UFT-8 encoded string: ");
+    fgets(input, 100, stdin);
+
+    // Getting rid of new line character, and if it is then replace to null character.
+    int len = strlen(input);
+    if (len > 0 && input[len - 1] == '\n') {
+        input[len - 1] = '\0';
+    }
 
     //Is the string valid ASCII
-    printf("Valid ACSII: %s\n", is_ascii(input) ? "true" : "false");
+    printf("Valid ASCII: %s\n", is_ascii(input) ? "true" : "false");
    
     // Uppercase the ASCII characters
     char uppercased[100];
     strcpy(uppercased, input);
     capitalize_ascii(uppercased);
-    printf("Uppercased ASCII: \"%s\"\n", uppercased);
+    printf("Uppercased ASCII: %s\n", uppercased);
 
     // Length in bytes 
     int byte_length = strlen(input);

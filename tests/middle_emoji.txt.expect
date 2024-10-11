@@ -1,0 +1,8 @@
+Valid ASCII: false
+Uppercased ASCII: SD🦮DFSDF
+Length in bytes: 11
+Number of code points: 8
+bytes per code point: 1 1 4 1 1 1 1 1 
+Substring of the first 6 code points: "sd🦮dfs"
+Code points as decimal numbers: 115 100 129454 100 102 115 100 102 
+Animal emojis: 🦮 

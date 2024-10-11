@@ -1,0 +1,8 @@
+Valid ASCII: false
+Uppercased ASCII: ADFASD🦮
+Length in bytes: 10
+Number of code points: 7
+bytes per code point: 1 1 1 1 1 1 4 
+Substring of the first 6 code points: "adfasd"
+Code points as decimal numbers: 97 100 102 97 115 100 129454 
+Animal emojis: 🦮 
